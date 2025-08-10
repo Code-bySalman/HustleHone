@@ -79,8 +79,8 @@ export default function Home() {
             <Link href="/resumes">
             <StarBorder
               as="button"
-              className="custom-class"
-              color="cyan"
+              className="bg-white"
+              color="white"
               speed="5s"
               onClick={handleButtonClick}
             >
