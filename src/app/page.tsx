@@ -30,9 +30,9 @@ export default function Home() {
   return (
     <main className="relative w-full h-screen overflow-hidden">
       {/* 🌀 Background Iridescence */}
-      <div className="fixed inset-0 z-0 bg-black">
+      <div className="fixed inset-0 z-0 bg-blue">
         <Iridescence
-          color={[1, 1, 1]}
+          color={[0.2, 0.4,0.8]}
           mouseReact={false}
           amplitude={0.1}
           speed={1.0}
@@ -58,7 +58,7 @@ export default function Home() {
 
           <SplitText
             text="Let your resume do the flexing!"
-            className="text-4xl md:text-5xl font-bold text-black p-4"
+            className="text-4xl md:text-5xl font-bold text-white p-4"
             delay={100}
             duration={0.6}
             ease="power3.out"
