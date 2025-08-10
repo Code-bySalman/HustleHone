@@ -68,8 +68,10 @@ export default function ProjectInfoForm({ resumeData, setResumeData }: EditorFor
     const oldIndex = fields.findIndex((f) => f.id === active.id)
     const newIndex = fields.findIndex((f) => f.id === over.id)
 
-    const current = getValues("projects")
-    const reordered = arrayMove(current, oldIndex, newIndex)
+    const current = getValues("projects") ?? []
+const reordered = arrayMove(current, oldIndex, newIndex)
+setValue("projects", reordered)
+
 
     setValue("projects", reordered)
   }

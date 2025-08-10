@@ -66,7 +66,7 @@ export default function WorkExperienceForm({ resumeData, setResumeData }: Editor
     const oldIndex = fields.findIndex((field) => field.id === active.id)
     const newIndex = fields.findIndex((field) => field.id === over.id)
 
-    const current = getValues("workExperiences")
+    const current = getValues("workExperiences")??[]
     const reordered = arrayMove(current, oldIndex, newIndex)
 
     setValue("workExperiences", reordered)

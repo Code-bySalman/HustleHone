@@ -54,7 +54,8 @@ export default function EducationalInfoForm({ resumeData, setResumeData }: Edito
     const from = fields.findIndex(f => f.id === active.id)
     const to = fields.findIndex(f => f.id === over.id)
 
-    const updated = arrayMove(form.getValues("educations"), from, to)
+   const updated = arrayMove(form.getValues("educations") || [], from, to)
+
     form.setValue("educations", updated, { shouldDirty: true })
   }
 

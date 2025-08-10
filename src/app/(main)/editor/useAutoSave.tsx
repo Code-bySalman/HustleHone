@@ -23,13 +23,17 @@ export default function useAutoSave(resumeData: ResumeValues) {
   }
 
   const hasChanges = () => {
-    const cloneA = structuredClone(debouncedResumeData)
-    const cloneB = structuredClone(lastSavedData)
+    type ResumeClone = Omit<ResumeValues, "photo"> & { photo?: any }
+    const cloneA: ResumeClone = structuredClone(debouncedResumeData)
+    const cloneB: ResumeClone = structuredClone(lastSavedData)
 
     delete cloneA.photo
     delete cloneB.photo
 
-    const isPhotoSame = isSamePhoto(debouncedResumeData.photo, lastSavedData.photo)
+    const isPhotoSame = isSamePhoto(
+      debouncedResumeData.photo instanceof File ? debouncedResumeData.photo : undefined,
+      lastSavedData.photo instanceof File ? lastSavedData.photo : undefined
+    )
 
     return JSON.stringify(cloneA) !== JSON.stringify(cloneB) || !isPhotoSame
   }
@@ -42,11 +46,15 @@ export default function useAutoSave(resumeData: ResumeValues) {
       setIsError(false)
 
       try {
-        const newData = structuredClone(debouncedResumeData)
+        type ResumeClone = Omit<ResumeValues, "photo"> & { photo?: any }
+        const newData: ResumeValues = structuredClone(debouncedResumeData)
 
-        if (isSamePhoto(newData.photo, lastSavedData.photo)) {
-          delete newData.photo
-        }
+if (isSamePhoto(
+  newData.photo instanceof File ? newData.photo : undefined,
+  lastSavedData.photo instanceof File ? lastSavedData.photo : undefined
+)) {
+  delete (newData as any).photo
+}
 
         const updatedResume = await saveResume({
           ...newData,
@@ -96,13 +104,17 @@ export default function useAutoSave(resumeData: ResumeValues) {
   }, [debouncedResumeData, isSaving, isError, searchParams, resumeId, lastSavedData, toast])
 
   const hasUnsavedChanges = (() => {
-    const cloneA = structuredClone(resumeData)
-    const cloneB = structuredClone(lastSavedData)
+    type ResumeClone = Omit<ResumeValues, "photo"> & { photo?: any }
+    const cloneA: ResumeClone = structuredClone(resumeData)
+    const cloneB: ResumeClone = structuredClone(lastSavedData)
 
     delete cloneA.photo
     delete cloneB.photo
 
-    const isPhotoSame = isSamePhoto(resumeData.photo, lastSavedData.photo)
+    const isPhotoSame = isSamePhoto(
+      resumeData.photo instanceof File ? resumeData.photo : undefined,
+      lastSavedData.photo instanceof File ? lastSavedData.photo : undefined
+    )
 
     return JSON.stringify(cloneA) !== JSON.stringify(cloneB) || !isPhotoSame
   })()

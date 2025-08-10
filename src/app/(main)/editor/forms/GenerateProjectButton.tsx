@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { generateProject } from "./actions"
-import { generateProjectSchema, Project } from "@/lib/validation"
+import { generateProjectSchema, Project} from "@/lib/validation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { WandSparklesIcon } from "lucide-react"
 import { useState } from "react"

@@ -10,7 +10,7 @@ type StarBorderProps<T extends React.ElementType> = {
 } & React.ComponentPropsWithoutRef<T>
 
 const StarBorder = <T extends React.ElementType = "button">({
-  as: Component = "button",
+  as,
   className = "",
   color = "white",
   speed = "6s",
@@ -18,6 +18,7 @@ const StarBorder = <T extends React.ElementType = "button">({
   children,
   ...rest
 }: StarBorderProps<T>) => {
+    const Component = as || "button"
   return (
     <Component
       className={`

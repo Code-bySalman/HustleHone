@@ -127,4 +127,6 @@ export const generateSummarySchema = z
 })
 
 export type GenerateProjectInput = z.infer<typeof generateProjectSchema>
+export type Project = NonNullable<ProjectValues["projects"]>[number]
+
 
