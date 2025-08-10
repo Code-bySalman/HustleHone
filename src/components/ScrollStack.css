@@ -1,0 +1,15 @@
+.scroll-stack-scroller {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.scroll-stack-inner {
+  height: auto;
+  position: relative;
+}
+
+.scroll-stack-card {
+  position: relative;
+  z-index: 10;
+}
