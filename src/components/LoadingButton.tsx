@@ -3,11 +3,11 @@ import { Button, ButtonProps } from "./ui/button";
 import { cn } from "@/lib/utils";
 
 interface LoadingButtonProps extends ButtonProps {
-    loading: boolean
+    loading?: boolean
 }
 
 export default function LoadingButton({
-    loading,
+    loading= false,
     disabled,
     className,
     ...props

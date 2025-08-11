@@ -50,7 +50,7 @@ const StarBorder = <T extends React.ElementType = "button">({
       ></div>
 
       {/* Inner content box */}
-    <div className="relative z-10 bg-gradient-to-b from-white to-gray-300 text-gray-900 text-center text-[16px] py-[16px] px-[26px] rounded-[18px] shadow-md hover:shadow-lg transition-all duration-300">
+    <div className="relative z-10 bg-gradient-to-b from-white to-gray-500 text-gray-900 text-center text-[16px] py-[16px] px-[26px] rounded-[18px] shadow-md hover:shadow-lg transition-all duration-300">
   {children}
 </div>
     </Component>
