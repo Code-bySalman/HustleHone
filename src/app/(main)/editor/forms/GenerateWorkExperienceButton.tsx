@@ -32,10 +32,7 @@ export default  function GenerateWorkExperienceButton({onWorkExperienceGenerated
    type="button"
    
    onClick={()=> {
-    if (!canUseAITools(subscriptionLevel)) {
-        premiumModal.setOpen(true);
-        return;
-    }
+    
    setshowInputDialog(true)
 }}>
    <WandSparklesIcon className="size-4"/>

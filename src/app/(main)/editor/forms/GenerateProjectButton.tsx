@@ -44,10 +44,7 @@ export default function GenerateProjectButton({
         variant="outline"
         type="button"
         onClick={()=> {
-           if (!canUseAITools(subscriptionLevel)) {
-               premiumModal.setOpen(true);
-               return;
-           }
+         
           setShowInputDialog(true)}}
       >
         <WandSparklesIcon className="size-4" />

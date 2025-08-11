@@ -12,9 +12,7 @@ export async function generateSummary(input: GenerateSummaryInput) {
       throw new Error("User is not authorized") 
     }
     const subscriptionLevel = await getUserSubscriptionLevel(userId);
-    if (!canUseAITools(subscriptionLevel)) {
-      throw new Error("This feature is only available for premium or premium + users. Please upgrade to use it.");
-    }
+    
 
   const {
     jobTitle,
@@ -107,9 +105,7 @@ export  async  function generateWorkExperience(
       throw new Error("User is not authorized") 
     }
     const subscriptionLevel = await getUserSubscriptionLevel(userId);
-    if (!canUseAITools(subscriptionLevel)) {
-      throw new Error("This feature is only available for premium or premium + users. Please upgrade to use it.");
-    }
+    
 
     const {description} = generateWorkExperienceSchema.parse(input);
 
@@ -121,7 +117,7 @@ Job title: <job title>
 Company: <company name>
 Start date: <format: YYYY-MM-DD> (only if provided)
 End date: <format: YYYY-MM-DD> (only if provided)
-Description: <an optimized description in bullet format, might be inferred from the job title>
+Description: <an optimized description in bullet format but each bullet should start in a new line and also make sure to express the description in words and grammar that go well with the job title, might be inferred from the job title>
 `
 
 const userMessage = `
