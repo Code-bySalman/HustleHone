@@ -1,82 +1,82 @@
-import { useToast } from "@/hooks/use-toast"
-import useDebounce from "@/hooks/useDebounce"
-import { ResumeValues } from "@/lib/validation"
-import { useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
-import { saveResume } from "./action"
-import { Button } from "@/components/ui/button"
 
-export default function useAutoSave(resumeData: ResumeValues) {
-  const searchParams = useSearchParams()
-  const { toast } = useToast()
-  const debouncedResumeData = useDebounce(resumeData, 2000)
+"use client";
 
-  const [resumeId, setResumeId] = useState(resumeData.id)
-  const [lastSavedData, setLastSavedData] = useState(structuredClone(resumeData))
-  const [isSaving, setIsSaving] = useState(false)
-  const [isError, setIsError] = useState(false)
+import { useToast } from "@/hooks/use-toast";
+import useDebounce from "@/hooks/useDebounce";
+import { ResumeValues } from "@/lib/validation";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { saveResume } from "./action";
+import { Button } from "@/components/ui/button";
+
+export default function useAutoSave(resumeData: ResumeValues, setResumeData: (data: ResumeValues) => void) {
+  const searchParams = useSearchParams();
+  const { toast } = useToast();
+  const debouncedResumeData = useDebounce(resumeData, 2000);
+
+  const [resumeId, setResumeId] = useState(resumeData.id);
+  const [lastSavedData, setLastSavedData] = useState(structuredClone(resumeData));
+  const [isSaving, setIsSaving] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const isSamePhoto = (a?: File, b?: File) => {
-    if (!a && !b) return true
-    if (!a || !b) return false
-    return a.name === b.name && a.size === b.size && a.lastModified === b.lastModified
-  }
+    if (!a && !b) return true;
+    if (!a || !b) return false;
+    return a.name === b.name && a.size === b.size && a.lastModified === b.lastModified;
+  };
 
   const hasChanges = () => {
-    type ResumeClone = Omit<ResumeValues, "photo"> & { photo?: any }
-    const cloneA: ResumeClone = structuredClone(debouncedResumeData)
-    const cloneB: ResumeClone = structuredClone(lastSavedData)
+    type ResumeClone = Omit<ResumeValues, "photo"> & { photo?: any };
+    const cloneA: ResumeClone = structuredClone(debouncedResumeData);
+    const cloneB: ResumeClone = structuredClone(lastSavedData);
 
-    delete cloneA.photo
-    delete cloneB.photo
+    delete cloneA.photo;
+    delete cloneB.photo;
 
     const isPhotoSame = isSamePhoto(
       debouncedResumeData.photo instanceof File ? debouncedResumeData.photo : undefined,
-      lastSavedData.photo instanceof File ? lastSavedData.photo : undefined
-    )
+      lastSavedData.photo instanceof File ? lastSavedData.photo : undefined,
+    );
 
-    return JSON.stringify(cloneA) !== JSON.stringify(cloneB) || !isPhotoSame
-  }
+    return JSON.stringify(cloneA) !== JSON.stringify(cloneB) || !isPhotoSame;
+  };
 
   useEffect(() => {
-    if (!debouncedResumeData || isSaving || isError || !hasChanges()) return
+    if (!debouncedResumeData || isSaving || isError || !hasChanges()) return;
 
     const save = async () => {
-      setIsSaving(true)
-      setIsError(false)
+      setIsSaving(true);
+      setIsError(false);
 
       try {
-        type ResumeClone = Omit<ResumeValues, "photo"> & { photo?: any }
-        const newData: ResumeValues = structuredClone(debouncedResumeData)
+        const newData: ResumeValues = structuredClone(debouncedResumeData);
 
-if (isSamePhoto(
-  newData.photo instanceof File ? newData.photo : undefined,
-  lastSavedData.photo instanceof File ? lastSavedData.photo : undefined
-)) {
-  delete (newData as any).photo
-}
+        if (
+          isSamePhoto(
+            newData.photo instanceof File ? newData.photo : undefined,
+            lastSavedData.photo instanceof File ? lastSavedData.photo : undefined,
+          )
+        ) {
+          delete (newData as any).photo;
+        }
 
         const updatedResume = await saveResume({
           ...newData,
           id: resumeId,
-        })
+        });
 
-        setResumeId(updatedResume.id)
-        setLastSavedData(structuredClone(debouncedResumeData))
+        setResumeId(updatedResume.id);
+        setResumeData({ ...resumeData, id: updatedResume.id });
+        setLastSavedData(structuredClone(debouncedResumeData));
 
         if (searchParams.get("resumeId") !== updatedResume.id) {
-          const newSearchParams = new URLSearchParams(searchParams)
-          newSearchParams.set("resumeId", updatedResume.id)
-
-          window.history.replaceState(
-            null,
-            "",
-            `${window.location.pathname}?${newSearchParams.toString()}`
-          )
+          const newSearchParams = new URLSearchParams(searchParams);
+          newSearchParams.set("resumeId", updatedResume.id);
+          window.history.replaceState(null, "", `${window.location.pathname}?${newSearchParams.toString()}`);
         }
       } catch (error) {
-        console.error("Auto save failed:", error)
-        setIsError(true)
+        console.error("Auto save failed:", error);
+        setIsError(true);
 
         const { dismiss } = toast({
           variant: "destructive",
@@ -86,41 +86,41 @@ if (isSamePhoto(
               <Button
                 variant="secondary"
                 onClick={() => {
-                  dismiss()
-                  setIsError(false)
+                  dismiss();
+                  setIsError(false);
                 }}
               >
                 Retry
               </Button>
             </div>
           ),
-        })
+        });
       } finally {
-        setIsSaving(false)
+        setIsSaving(false);
       }
-    }
+    };
 
-    save()
-  }, [debouncedResumeData, isSaving, isError, searchParams, resumeId, lastSavedData, toast])
+    save();
+  }, [debouncedResumeData, isSaving, isError, resumeId, searchParams, setResumeData]);
 
   const hasUnsavedChanges = (() => {
-    type ResumeClone = Omit<ResumeValues, "photo"> & { photo?: any }
-    const cloneA: ResumeClone = structuredClone(resumeData)
-    const cloneB: ResumeClone = structuredClone(lastSavedData)
+    type ResumeClone = Omit<ResumeValues, "photo"> & { photo?: any };
+    const cloneA: ResumeClone = structuredClone(resumeData);
+    const cloneB: ResumeClone = structuredClone(lastSavedData);
 
-    delete cloneA.photo
-    delete cloneB.photo
+    delete cloneA.photo;
+    delete cloneB.photo;
 
     const isPhotoSame = isSamePhoto(
       resumeData.photo instanceof File ? resumeData.photo : undefined,
-      lastSavedData.photo instanceof File ? lastSavedData.photo : undefined
-    )
+      lastSavedData.photo instanceof File ? lastSavedData.photo : undefined,
+    );
 
-    return JSON.stringify(cloneA) !== JSON.stringify(cloneB) || !isPhotoSame
-  })()
+    return JSON.stringify(cloneA) !== JSON.stringify(cloneB) || !isPhotoSame;
+  })();
 
   return {
     isSaving,
-    hasUnsavedChanges
-  }
+    hasUnsavedChanges,
+  };
 }

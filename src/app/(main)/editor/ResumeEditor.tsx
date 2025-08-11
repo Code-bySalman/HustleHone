@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useSearchParams } from "next/navigation";
@@ -48,7 +49,7 @@ export default function ResumeEditor({ resumeToEdit, resume }: ResumeEditorProps
     resumeToEdit ? maptoResumeValues(resumeToEdit) : defaultResumeData,
   );
   const [showSmResumePreview, setShowResumePreview] = useState(false);
-  const { isSaving, hasUnsavedChanges } = useAutoSave(resumeData);
+  const { isSaving, hasUnsavedChanges } = useAutoSave(resumeData, setResumeData); // Pass setResumeData
   useUnloadWarning(hasUnsavedChanges);
 
   const currentStep = searchParams.get("step") || steps[0].key;
@@ -62,11 +63,7 @@ export default function ResumeEditor({ resumeToEdit, resume }: ResumeEditorProps
   const FormComponent = steps.find((step) => step.key === currentStep)?.component;
 
   // Log for debugging
-  console.log("resume:", resume, "resumeToEdit:", resumeToEdit);
-
-  if (!resume && !resumeToEdit) {
-    return <div>Loading resume data...</div>;
-  }
+  console.log("resume:", resume, "resumeToEdit:", resumeToEdit, "resumeData.id:", resumeData.id);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -93,8 +90,8 @@ export default function ResumeEditor({ resumeToEdit, resume }: ResumeEditorProps
 
         {/* Right side - MoreMenu */}
         <div className="relative flex items-center justify-end w-1/3 p-3">
-          {(resume?.id || resumeToEdit?.id) && (
-            <MoreMenu resumeId={resume?.id || resumeToEdit!.id} onPrintClick={reactToPrintFn} />
+          {resumeData.id && (
+            <MoreMenu resumeId={resumeData.id} onPrintClick={reactToPrintFn} />
           )}
         </div>
       </header>

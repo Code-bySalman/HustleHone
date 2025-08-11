@@ -1,32 +1,31 @@
-"use client"
 
-import { Button } from "@/components/ui/button"
-import { Printer } from "lucide-react"
-import { useReactToPrint } from "react-to-print"
-import React from "react"
+"use client";
+
+import { useReactToPrint } from "react-to-print";
+import { Button } from "@/components/ui/button";
+import { Printer } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface PrintButtonProps {
-  contentRef: React.RefObject<HTMLElement>
-  documentTitle?: string
-  className?: string
+  contentRef: React.RefObject<HTMLElement>;
+  documentTitle?: string;
+  className?: string;
 }
 
 export default function PrintButton({ contentRef, documentTitle = "Document", className = "" }: PrintButtonProps) {
   const handlePrint = useReactToPrint({
-    content: () => contentRef.current,
+    contentRef, 
     documentTitle,
-  })
+  });
 
   return (
     <Button
-      variant="outline"
+      variant="ghost"
       size="icon"
-      title="Print Resume"
       onClick={handlePrint}
-      className={className}
-      type="button"
+      className={cn("transition-opacity", className)}
     >
       <Printer className="size-4" />
     </Button>
-  )
+  );
 }
