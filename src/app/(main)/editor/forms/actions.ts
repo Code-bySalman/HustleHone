@@ -11,7 +11,7 @@ export async function generateSummary(input: GenerateSummaryInput) {
     if (!userId) {
       throw new Error("User is not authorized") 
     }
-    const subscriptionLevel = await getUserSubscriptionLevel(userId);
+   
     
 
   const {
