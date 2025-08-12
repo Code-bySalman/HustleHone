@@ -101,7 +101,7 @@ function InputDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-white dark:bg-black text-white dark:text-white">
+      <DialogContent className="bg-white dark:bg-black text-black  dark:text-white">
         <DialogHeader>
           <DialogTitle>Generate Project</DialogTitle>
           <DialogDescription>
