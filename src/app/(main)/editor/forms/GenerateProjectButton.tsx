@@ -101,7 +101,7 @@ function InputDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-white">
+      <DialogContent className="bg-white dark:bg-black text-white dark:text-white">
         <DialogHeader>
           <DialogTitle>Generate Project</DialogTitle>
           <DialogDescription>
@@ -120,7 +120,7 @@ function InputDialog({
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea
-                      className="bg-white"
+                      className="bg-white text-black"
                       {...field}
                       placeholder={`E.g. "Built a Spotify clone using Next.js and Tailwind..."`}
                       autoFocus
@@ -133,7 +133,8 @@ function InputDialog({
 
             <LoadingButton
               type="submit"
-              loading={form.formState.isSubmitting}
+              loading={form.formState.isSubmitting} 
+              className="dark:bg-white dark:text-black"
             >
               Generate
             </LoadingButton>

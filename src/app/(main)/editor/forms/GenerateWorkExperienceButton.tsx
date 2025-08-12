@@ -83,7 +83,7 @@ export function InputDialog({open, onOpenChange, onWorkExperienceGenerated}: Inp
 
 
     return <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="bg-white">
+        <DialogContent className="bg-white dark:bg-black text-white dark:text-white">
             <DialogHeader>
                 <DialogTitle>
                     Generate work experience.
@@ -102,7 +102,7 @@ export function InputDialog({open, onOpenChange, onWorkExperienceGenerated}: Inp
                             <FormLabel>Description</FormLabel>
                             <FormControl>
                                 <Textarea 
-                                className=" bg-white"
+                                className=" bg-white text-black "
                                 {...field}
                                 placeholder={`E.g. "from sept. 2019 to march 2022 I worked at a Burger  shop as a waiter, my tasks were...." `}
                                 autoFocus
@@ -115,6 +115,7 @@ export function InputDialog({open, onOpenChange, onWorkExperienceGenerated}: Inp
                     <LoadingButton
                     type="submit"
                     loading={form.formState.isSubmitting}
+                    className="dark:bg-white dark:text-black"
                     >
                         Generate
                     </LoadingButton>
