@@ -160,10 +160,7 @@ export async function generateProject(input: GenerateProjectInput) {
     if (!userId) {
       throw new Error("User is not authorized") 
     }
-    const subscriptionLevel = await getUserSubscriptionLevel(userId);
-    if (!canUseAITools(subscriptionLevel)) {
-      throw new Error("This feature is only available for premium or premium + users. Please upgrade to use it.");
-    }
+   
   const { description } = generateProjectSchema.parse(input)
 
   const systemMessage = `
@@ -171,7 +168,7 @@ You are a job resume generator AI. Your task is to generate a project entry base
 Respond strictly in the following format (omit any field that can't be inferred, but DO NOT make stuff up):
 
 Title: <project title>
-Description: <short but impressive description>
+Description: <A bit detailed 4-5 lines description and impressive description>
 Tech stack: <comma separated tech stack>
 Start date: <YYYY-MM-DD> (optional)
 End date: <YYYY-MM-DD> (optional)

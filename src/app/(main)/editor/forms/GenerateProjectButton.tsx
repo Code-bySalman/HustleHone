@@ -1,7 +1,9 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { generateProject } from "./actions"
-import { generateProjectSchema, Project} from "@/lib/validation"
+import { generateProjectSchema, Project } from "@/lib/validation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { WandSparklesIcon } from "lucide-react"
 import { useState } from "react"
@@ -23,9 +25,6 @@ import {
 } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import LoadingButton from "@/components/LoadingButton"
-import { useSubscriptionLevel } from "../../SubscriptionLevelProvider"
-import usePremiumModal from "@/hooks/usePremiumModal"
-import { canUseAITools } from "@/lib/permissions"
 
 interface GenerateProjectButtonProps {
   onProjectGenerated: (project: Project) => void
@@ -35,18 +34,14 @@ export default function GenerateProjectButton({
   onProjectGenerated
 }: GenerateProjectButtonProps) {
   const [showInputDialog, setShowInputDialog] = useState(false)
-  const subscriptionLevel = useSubscriptionLevel();
-  const premiumModal = usePremiumModal();
+
+  function handleOpen() {
+    setShowInputDialog(true)
+  }
 
   return (
     <>
-      <Button
-        variant="outline"
-        type="button"
-        onClick={()=> {
-         
-          setShowInputDialog(true)}}
-      >
+      <Button variant="outline" type="button" onClick={handleOpen}>
         <WandSparklesIcon className="size-4" />
         Smart Fill (AI)
       </Button>
@@ -87,26 +82,23 @@ function InputDialog({
     try {
       const aiResponse = await generateProject(input)
       onProjectGenerated(aiResponse)
+      form.reset()
     } catch (error) {
       console.error(error)
-        toast({
-      variant: "destructive",
-      className: "bg-red",
-      description: error instanceof Error
-        ? error.message
-        : "Something went wrong. Please try again."
-    })
+      toast({
+        variant: "destructive",
+        description: error instanceof Error ? error.message : "Something went wrong. Please try again."
+      })
     }
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-white dark:bg-black text-black  dark:text-white">
+      <DialogContent className="bg-white dark:bg-black text-black dark:text-white">
         <DialogHeader>
           <DialogTitle>Generate Project</DialogTitle>
           <DialogDescription>
-            Describe your project and the AI will generate a structured entry
-            for you.
+            Describe your project and the AI will generate a structured entry for you.
           </DialogDescription>
         </DialogHeader>
 
@@ -124,6 +116,7 @@ function InputDialog({
                       {...field}
                       placeholder={`E.g. "Built a Spotify clone using Next.js and Tailwind..."`}
                       autoFocus
+                      rows={6}
                     />
                   </FormControl>
                   <FormMessage />
@@ -133,7 +126,7 @@ function InputDialog({
 
             <LoadingButton
               type="submit"
-              loading={form.formState.isSubmitting} 
+              loading={form.formState.isSubmitting}
               className="dark:bg-white dark:text-black"
             >
               Generate
