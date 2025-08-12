@@ -117,7 +117,7 @@ Job title: <job title>
 Company: <company name>
 Start date: <format: YYYY-MM-DD> (only if provided)
 End date: <format: YYYY-MM-DD> (only if provided)
-Description: <an optimized description in bullet format but each bullet should start in a new line and also make sure to express the description in words and grammar that go well with the job title, might be inferred from the job title>
+Description: <an optimized description in bullet format , might be inferred from the job title>
 `
 
 const userMessage = `
